@@ -131,12 +131,6 @@
     return `${text.slice(0, max)}...`
   }
 
-  function shortStatus(previousStatus, newStatus) {
-    const from = previousStatus || "—"
-    const to = newStatus || "—"
-    return `${from} → ${to}`
-  }
-
   function badgeClass(action) {
     switch (String(action || "").toUpperCase()) {
       case "ASSIGNED":
