@@ -1,0 +1,78 @@
+D:\Codestuff\.NET\Project\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.deps.json
+D:\Codestuff\.NET\Project\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.dll
+D:\Codestuff\.NET\Project\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.pdb
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.AssemblyReference.cache
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfoInputs.cache
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfo.cs
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.CoreCompileInputs.cache
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.sourcelink.json
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetMan.546BE579.Up2Date
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\refint\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project\AssetManagement.Application\obj\Debug\net8.0\ref\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.deps.json
+D:\Codestuff\.NET\Project2\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project2\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.dll
+D:\Codestuff\.NET\Project2\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.pdb
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.AssemblyReference.cache
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfoInputs.cache
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfo.cs
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.CoreCompileInputs.cache
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetMan.546BE579.Up2Date
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\refint\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\ref\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.sourcelink.json
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.deps.json
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.dll
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.pdb
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.AssemblyReference.cache
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfoInputs.cache
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfo.cs
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.CoreCompileInputs.cache
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetMan.546BE579.Up2Date
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\refint\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project2.3\AssetManagement.Application\obj\Debug\net8.0\ref\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.deps.json
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.dll
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.pdb
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.AssemblyReference.cache
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfoInputs.cache
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfo.cs
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.CoreCompileInputs.cache
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetMan.546BE579.Up2Date
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\refint\AssetManagement.Application.dll
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\Project2.3 (1)\Project2.3\AssetManagement.Application\obj\Debug\net8.0\ref\AssetManagement.Application.dll
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.AssemblyReference.cache
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfoInputs.cache
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.AssemblyInfo.cs
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.csproj.CoreCompileInputs.cache
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.sourcelink.json
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.deps.json
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.dll
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\bin\Debug\net8.0\AssetManagement.Domain.pdb
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetMan.546BE579.Up2Date
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.dll
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\refint\AssetManagement.Application.dll
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\AssetManagement.Application.pdb
+D:\Codestuff\.NET\TestLogin\AssetManagement.Application\obj\Debug\net8.0\ref\AssetManagement.Application.dll
