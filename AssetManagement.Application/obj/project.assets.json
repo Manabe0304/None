@@ -3179,11 +3179,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Codestuff\\.NET\\TestLogin\\AssetManagement.Application\\AssetManagement.Application.csproj",
+      "projectUniqueName": "D:\\Codestuff\\.NET\\None\\AssetManagement.Application\\AssetManagement.Application.csproj",
       "projectName": "AssetManagement.Application",
-      "projectPath": "D:\\Codestuff\\.NET\\TestLogin\\AssetManagement.Application\\AssetManagement.Application.csproj",
+      "projectPath": "D:\\Codestuff\\.NET\\None\\AssetManagement.Application\\AssetManagement.Application.csproj",
       "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-      "outputPath": "D:\\Codestuff\\.NET\\TestLogin\\AssetManagement.Application\\obj\\",
+      "outputPath": "D:\\Codestuff\\.NET\\None\\AssetManagement.Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3204,8 +3204,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Codestuff\\.NET\\TestLogin\\AssetManagement.Domain\\AssetManagement.Domain.csproj": {
-              "projectPath": "D:\\Codestuff\\.NET\\TestLogin\\AssetManagement.Domain\\AssetManagement.Domain.csproj"
+            "D:\\Codestuff\\.NET\\None\\AssetManagement.Domain\\AssetManagement.Domain.csproj": {
+              "projectPath": "D:\\Codestuff\\.NET\\None\\AssetManagement.Domain\\AssetManagement.Domain.csproj"
             }
           }
         }

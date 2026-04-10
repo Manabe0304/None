@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DOta3//i7Tg=",
+  "dgSpecHash": "kTIUEKBbZpw=",
   "success": true,
-  "projectFilePath": "D:\\Codestuff\\.NET\\TestLogin\\AssetManagement.Application\\AssetManagement.Application.csproj",
+  "projectFilePath": "D:\\Codestuff\\.NET\\None\\AssetManagement.Application\\AssetManagement.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Asus\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
