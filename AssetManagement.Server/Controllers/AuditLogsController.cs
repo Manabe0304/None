@@ -76,7 +76,6 @@ namespace AssetManagement.Server.Controllers
             var result = logs.Select(log => new AuditLogItemResponse
             {
                 Id = log.Id,
-                // createdAt stored in UTC in DB; map to DateTimeOffset to keep timezone info
                 CreatedAt = DateTime.SpecifyKind(log.CreatedAt, DateTimeKind.Utc),
                 Username = GetUsernameFast(log, actorUsers),
                 Department = GetDepartmentFast(log, actorUsers),
@@ -87,60 +86,33 @@ namespace AssetManagement.Server.Controllers
             return Ok(result);
         }
 
-        private static string GetUsernameFast(
-            AuditLog log,
-            Dictionary<Guid, User> actorUsers)
+        private static string GetUsernameFast(AuditLog log, Dictionary<Guid, User> actorUsers)
         {
-            if (!string.IsNullOrWhiteSpace(log.ActorEmail))
+            if (!string.IsNullOrWhiteSpace(log.ActorEmail)) return log.ActorEmail;
+            if (log.UserId != null && log.UserId != Guid.Empty && actorUsers.TryGetValue(log.UserId.Value, out var actorUser))
             {
-                return log.ActorEmail;
+                if (!string.IsNullOrWhiteSpace(actorUser.Email)) return actorUser.Email;
+                if (!string.IsNullOrWhiteSpace(actorUser.FullName)) return actorUser.FullName;
             }
-
-            if (log.UserId != null &&
-                log.UserId != Guid.Empty &&
-                actorUsers.TryGetValue(log.UserId.Value, out var actorUser))
-            {
-                if (!string.IsNullOrWhiteSpace(actorUser.Email))
-                {
-                    return actorUser.Email;
-                }
-
-                if (!string.IsNullOrWhiteSpace(actorUser.FullName))
-                {
-                    return actorUser.FullName;
-                }
-            }
-
             return "Unknown";
         }
 
-        private static string GetDepartmentFast(
-            AuditLog log,
-            Dictionary<Guid, User> actorUsers)
+        private static string GetDepartmentFast(AuditLog log, Dictionary<Guid, User> actorUsers)
         {
-            if (!string.IsNullOrWhiteSpace(log.ActorDepartment))
+            if (!string.IsNullOrWhiteSpace(log.ActorDepartment)) return log.ActorDepartment;
+            if (log.UserId != null && log.UserId != Guid.Empty && actorUsers.TryGetValue(log.UserId.Value, out var actorUser))
             {
-                return log.ActorDepartment;
-            }
-
-            if (log.UserId != null &&
-                log.UserId != Guid.Empty &&
-                actorUsers.TryGetValue(log.UserId.Value, out var actorUser))
-            {
-                if (actorUser.Department != null &&
-                    !string.IsNullOrWhiteSpace(actorUser.Department.Name))
+                if (actorUser.Department != null && !string.IsNullOrWhiteSpace(actorUser.Department.Name))
                 {
                     return actorUser.Department.Name;
                 }
             }
-
             return "Unknown";
         }
 
         private static string FormatAction(string? action, string? entityType)
         {
             var normalizedEntity = NormalizeEntity(entityType);
-
             if (string.IsNullOrWhiteSpace(action))
                 return normalizedEntity == "item" ? "unknown" : $"update {normalizedEntity}";
 
@@ -148,11 +120,8 @@ namespace AssetManagement.Server.Controllers
 
             return normalizedAction switch
             {
-                // ── Auth ──────────────────────────────────────────────────────────
                 "LOGIN" => "login",
                 "LOGOUT" => "logout",
-
-                // ── User ─────────────────────────────────────────────────────────
                 "CREATE_USER" => "create user",
                 "UPDATE_USER" => "update user",
                 "DELETE_USER" => "delete user",
@@ -160,40 +129,38 @@ namespace AssetManagement.Server.Controllers
                 "UPDATE_USERS" => "update users",
                 "DELETE_USERS" => "delete users",
                 "VIEW_USER" => "view user",
-
-                // ── Asset ─────────────────────────────────────────────────────────
                 "CREATE_ASSET" => "create asset",
                 "UPDATE_ASSET" => "update asset",
                 "DELETE_ASSET" => "delete asset",
                 "ASSIGN_ASSET" => "assign asset",
                 "RETURN_ASSET" => "return asset",
                 "REPORT_BROKEN_ASSET" => "report broken asset",
-                "VIEW_ASSET" => "view asset",
 
-                // ── Department ────────────────────────────────────────────────────
+                // [BẮT ĐẦU SỬA LỖI: Thêm các action VIEW để Audit Log không hiển thị sai hoặc bị sót khi duyệt trang]
+                "VIEW_ASSET" => "view asset",
+                "VIEW_ASSETS" => "view assets",
+                "VIEW_DEPARTMENTS" => "view departments",
+                "VIEW_CURRENT_ASSIGNMENTS" => "view current assignments",
+                "VIEW_RETURNS" => "view return requests",
+                "VIEW_MAINTENANCES" => "view maintenance records",
+                "VIEW_AUDIT_LOGS" => "view audit logs",
+                // [KẾT THÚC SỬA LỖI]
+
                 "CREATE_DEPARTMENT" => "create department",
                 "UPDATE_DEPARTMENT" => "update department",
                 "DELETE_DEPARTMENT" => "delete department",
                 "CREATE_DEPARTMENTS" => "create departments",
                 "UPDATE_DEPARTMENTS" => "update departments",
                 "DELETE_DEPARTMENTS" => "delete departments",
-                "VIEW_DEPARTMENT" => "view department",         
-
-                // ── Assignment (phân biệt 3 loại) ────────────────────────────────
+                "VIEW_DEPARTMENT" => "view department",
                 "VIEW_ASSIGNMENT" => "view assignment",
-                "VIEW_CURRENT_ASSIGNMENT" => "view current assignment",   
-                "VIEW_ASSET_HISTORY" => "view asset history",        
-
-                // ── Return (phân biệt 3 tab) ──────────────────────────────────────
-                "VIEW_PENDING_RETURNS" => "view pending returns",       
-                "VIEW_INSPECTED_RETURNS" => "view inspected returns",     
-                "VIEW_PROCESSED_RETURNS" => "view processed history",     
-
-                // ── Request ───────────────────────────────────────────────────────
+                "VIEW_CURRENT_ASSIGNMENT" => "view current assignment",
+                "VIEW_ASSET_HISTORY" => "view asset history",
+                "VIEW_PENDING_RETURNS" => "view pending returns",
+                "VIEW_INSPECTED_RETURNS" => "view inspected returns",
+                "VIEW_PROCESSED_RETURNS" => "view processed history",
                 "APPROVE_REQUEST" => "approve request",
                 "REJECT_REQUEST" => "reject request",
-
-                // ── Misc ─────────────────────────────────────────────────────────
                 "IMPORT_DATA" => "import data",
                 "EXPORT_DATA" => "export data",
 
@@ -203,47 +170,21 @@ namespace AssetManagement.Server.Controllers
 
         private static string FallbackFormatAction(string action, string entity)
         {
-            if (action.StartsWith("POST_", StringComparison.OrdinalIgnoreCase))
-            {
-                return $"create {entity}";
-            }
-            if (action.StartsWith("PUT_", StringComparison.OrdinalIgnoreCase) ||
-                action.StartsWith("PATCH_", StringComparison.OrdinalIgnoreCase))
-            {
-                return $"update {entity}";
-            }
-            if (action.StartsWith("DELETE_", StringComparison.OrdinalIgnoreCase))
-            {
-                return $"delete {entity}";
-            }
-            if (action.StartsWith("VIEW_", StringComparison.OrdinalIgnoreCase))   // ← CHỈ SỬA ĐOẠN NÀY
-            {
-                return $"view {entity}";
-            }
-            var parts = action
-                .Split('_', StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.ToLowerInvariant())
-                .ToArray();
-            if (parts.Length == 0)
-            {
-                return "unknown";
-            }
-            if (parts.Length == 1)
-            {
-                return parts[0];
-            }
+            if (action.StartsWith("POST_", StringComparison.OrdinalIgnoreCase)) return $"create {entity}";
+            if (action.StartsWith("PUT_", StringComparison.OrdinalIgnoreCase) || action.StartsWith("PATCH_", StringComparison.OrdinalIgnoreCase)) return $"update {entity}";
+            if (action.StartsWith("DELETE_", StringComparison.OrdinalIgnoreCase)) return $"delete {entity}";
+            if (action.StartsWith("VIEW_", StringComparison.OrdinalIgnoreCase)) return $"view {entity}";
+
+            var parts = action.Split('_', StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToArray();
+            if (parts.Length == 0) return "unknown";
+            if (parts.Length == 1) return parts[0];
             return string.Join(" ", parts);
         }
 
         private static string NormalizeEntity(string? entityType)
         {
-            if (string.IsNullOrWhiteSpace(entityType))
-            {
-                return "item";
-            }
-
+            if (string.IsNullOrWhiteSpace(entityType)) return "item";
             var value = entityType.Trim().ToUpperInvariant();
-
             return value switch
             {
                 "USER" => "user",
@@ -269,81 +210,36 @@ namespace AssetManagement.Server.Controllers
 
         private static bool IsEntityType(string? entityType, params string[] candidates)
         {
-            if (string.IsNullOrWhiteSpace(entityType))
-            {
-                return false;
-            }
-
+            if (string.IsNullOrWhiteSpace(entityType)) return false;
             var value = entityType.Trim().ToUpperInvariant();
             return candidates.Any(x => x == value);
         }
 
-        private static string BuildTargetNameFast(
-            AuditLog log,
-            Dictionary<Guid, User> targetUsers,
-            Dictionary<Guid, Department> departments,
-            Dictionary<Guid, Asset> assets)
+        private static string BuildTargetNameFast(AuditLog log, Dictionary<Guid, User> targetUsers, Dictionary<Guid, Department> departments, Dictionary<Guid, Asset> assets)
         {
-            if (!string.IsNullOrWhiteSpace(log.TargetEmail))
-            {
-                return log.TargetEmail;
-            }
-
+            if (!string.IsNullOrWhiteSpace(log.TargetEmail)) return log.TargetEmail;
             var entityType = log.EntityType;
             var entityId = log.EntityId;
-
-            if (string.IsNullOrWhiteSpace(entityType))
-            {
-                return "Unknown";
-            }
-
-            if (entityId == null || entityId == Guid.Empty)
-            {
-                return GetDefaultTargetLabel(entityType);
-            }
+            if (string.IsNullOrWhiteSpace(entityType)) return "Unknown";
+            if (entityId == null || entityId == Guid.Empty) return GetDefaultTargetLabel(entityType);
 
             var type = entityType.Trim().ToUpperInvariant();
-
-            if ((type == "USER" || type == "USERS") &&
-                targetUsers.TryGetValue(entityId.Value, out var user))
+            if ((type == "USER" || type == "USERS") && targetUsers.TryGetValue(entityId.Value, out var user))
             {
-                if (!string.IsNullOrWhiteSpace(user.Email))
-                {
-                    return user.Email;
-                }
-
-                if (!string.IsNullOrWhiteSpace(user.FullName))
-                {
-                    return user.FullName;
-                }
-
+                if (!string.IsNullOrWhiteSpace(user.Email)) return user.Email;
+                if (!string.IsNullOrWhiteSpace(user.FullName)) return user.FullName;
                 return $"User - {entityId}";
             }
-
-            if ((type == "DEPARTMENT" || type == "DEPARTMENTS") &&
-                departments.TryGetValue(entityId.Value, out var dept))
+            if ((type == "DEPARTMENT" || type == "DEPARTMENTS") && departments.TryGetValue(entityId.Value, out var dept))
             {
-                return !string.IsNullOrWhiteSpace(dept.Name)
-                    ? dept.Name
-                    : $"Department - {entityId}";
+                return !string.IsNullOrWhiteSpace(dept.Name) ? dept.Name : $"Department - {entityId}";
             }
-
-            if ((type == "ASSET" || type == "ASSETS") &&
-                assets.TryGetValue(entityId.Value, out var asset))
+            if ((type == "ASSET" || type == "ASSETS") && assets.TryGetValue(entityId.Value, out var asset))
             {
-                if (!string.IsNullOrWhiteSpace(asset.AssetTag))
-                {
-                    return asset.AssetTag;
-                }
-
-                if (!string.IsNullOrWhiteSpace(asset.SerialNumber))
-                {
-                    return asset.SerialNumber;
-                }
-
+                if (!string.IsNullOrWhiteSpace(asset.AssetTag)) return asset.AssetTag;
+                if (!string.IsNullOrWhiteSpace(asset.SerialNumber)) return asset.SerialNumber;
                 return $"Asset - {entityId}";
             }
-
             return type switch
             {
                 "ROLE" => "Role",

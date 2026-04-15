@@ -1,29 +1,29 @@
 <template>
-  <div class="audit-logs-page">
-    <div class="page-header">
+  <div class="audit-logs-page container py-4">
+    <div class="page-header d-flex justify-content-between align-items-start gap-3 mb-4">
       <div>
         <h2>Audit Logs</h2>
         <p class="page-subtitle">Track user activities</p>
       </div>
 
-      <button class="refresh-btn" @click="fetchLogs" :disabled="isLoading">
+      <button class="btn btn-primary" @click="fetchLogs" :disabled="isLoading">
         {{ isLoading ? "Loading..." : "Refresh" }}
       </button>
     </div>
 
-    <div v-if="errorMessage" class="error-banner">
+    <div v-if="errorMessage" class="error-banner alert alert-danger d-flex justify-content-between align-items-center">
       <div>
         <strong>Cannot load audit logs.</strong>
         <p>{{ errorMessage }}</p>
       </div>
 
-      <button class="retry-btn" @click="fetchLogs" :disabled="isLoading">
+      <button class="retry-btn btn btn-outline-danger" @click="fetchLogs" :disabled="isLoading">
         Try again
       </button>
     </div>
 
-    <div class="table-wrapper">
-      <table class="audit-table">
+    <div class="table-wrapper table-responsive">
+      <table class="audit-table table">
         <thead>
           <tr>
             <th>Time</th>
@@ -296,23 +296,19 @@
     font-size: 14px;
   }
 
-  .refresh-btn,
-  .retry-btn {
-    background: #162233;
-    color: #fff;
+  .btn-primary {
     padding: 8px 14px;
     border-radius: 6px;
-    border: none;
     cursor: pointer;
   }
 
-    .refresh-btn:disabled,
-    .retry-btn:disabled {
+    .btn-primary:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
-  .error-banner {
+  .error-banner,
+  .alert {
     display: flex;
     justify-content: space-between;
     align-items: center;

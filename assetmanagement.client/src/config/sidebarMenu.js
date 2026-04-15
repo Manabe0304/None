@@ -51,12 +51,6 @@ const sidebarMenu = {
       to: "/admin/audit-logs",
       icon: "fa-solid fa-file-lines",
     },
-
-    {
-      text: "Settings",
-      to: "/admin/settings",
-      icon: "fa-solid fa-gear",
-    }
   ],
 
   manager: [

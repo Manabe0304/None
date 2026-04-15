@@ -187,6 +187,7 @@ namespace AssetManagement.Server.Controllers
             if (returnRequest.Asset != null)
             {
                 returnRequest.Asset.CurrentUserId = null;
+                returnRequest.Asset.DepartmentId = null;
                 returnRequest.Asset.Status = AssetStatus.AVAILABLE.ToString();
                 returnRequest.Asset.UpdatedAt = now;
 
@@ -318,6 +319,7 @@ namespace AssetManagement.Server.Controllers
 
                     returnRequest.Asset.Status = finalAssetStatus;
                     returnRequest.Asset.CurrentUserId = null;
+                    returnRequest.Asset.DepartmentId = null;
                     returnRequest.Asset.UpdatedAt = now;
 
                     if (!string.Equals(previousStatus, finalAssetStatus, StringComparison.OrdinalIgnoreCase))

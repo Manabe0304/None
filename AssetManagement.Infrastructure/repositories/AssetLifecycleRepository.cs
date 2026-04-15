@@ -1,6 +1,7 @@
 ﻿using AssetManagement.Application.interfaces;
 using AssetManagement.Domain.entities;
 using AssetManagement.Domain.Entities;
+using AssetManagement.Domain.Enums;
 using AssetManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +53,12 @@ namespace AssetManagement.Infrastructure.repositories
                 m.AssetId == assetId &&
                 (m.CompletedAt == null || m.Status == "UNDER_MAINTENANCE" || m.Outcome == "PENDING"));
 
+            Console.WriteLine($"[DEBUG] AssetId: {assetId}");
+            Console.WriteLine($"[DEBUG] hasOpenReturn: {hasOpenReturn}");
+            Console.WriteLine($"[DEBUG] hasOpenBrokenReport: {hasOpenBrokenReport}");
+            Console.WriteLine($"[DEBUG] hasOpenReservation: {hasOpenReservation}");
+            Console.WriteLine($"[DEBUG] hasOpenMaintenance: {hasOpenMaintenance}");
+
             return hasOpenReturn || hasOpenBrokenReport || hasOpenReservation || hasOpenMaintenance;
         }
 
@@ -89,6 +96,62 @@ namespace AssetManagement.Infrastructure.repositories
             {
                 await tx.RollbackAsync();
                 throw;
+            }
+        }
+
+        public async Task CloseActiveAssignmentAsync(Guid assetId, DateTime closedAt)
+        {
+            var assignment = await _context.Assignments
+                .FirstOrDefaultAsync(a => a.AssetId == assetId
+                    && a.Status == "ASSIGNED"
+                    && a.ReturnedAt == null
+                    && !a.IsDeleted);
+
+            if (assignment == null) return;
+
+            assignment.Status = AssignmentStatus.RETURNED.ToString();
+            assignment.ReturnedAt = closedAt;
+            assignment.UpdatedAt = closedAt;
+        }
+
+        public async Task CloseOpenBrokenReportsAsync(Guid assetId, DateTime closedAt)
+        {
+            var reports = await _context.BrokenReports
+                .Where(r => !r.IsDeleted && r.AssetId == assetId
+                    && (r.Status == "OPEN" || r.Status == "ACCEPTED"))
+                .ToListAsync();
+
+            foreach (var r in reports)
+            {
+                r.Status = "RESOLVED";
+                r.UpdatedAt = closedAt;
+            }
+        }
+
+        public async Task CloseOpenReturnRequestsAsync(Guid assetId, DateTime closedAt)
+        {
+            var requests = await _context.ReturnRequests
+                .Where(r => !r.IsDeleted && r.AssetId == assetId
+                    && r.Status != "INSPECTED")
+                .ToListAsync();
+
+            foreach (var r in requests)
+            {
+                r.Status = "CANCELLED";
+                r.UpdatedAt = closedAt;
+            }
+        }
+
+        public async Task CancelActiveReservationsAsync(Guid assetId, DateTime closedAt)
+        {
+            var reservations = await _context.AssetReservations
+                .Where(r => r.AssetId == assetId && r.Status == "ACTIVE")
+                .ToListAsync();
+
+            foreach (var r in reservations)
+            {
+                r.Status = "CANCELLED";
+                r.UpdatedAt = closedAt;
             }
         }
     }

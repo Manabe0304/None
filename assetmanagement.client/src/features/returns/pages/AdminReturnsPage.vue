@@ -1,175 +1,183 @@
 <template>
-  <section class="admin-returns-page">
-    <div class="page-header">
-      <h2>Returns Management</h2>
-      <p class="muted">Manage pending handbacks and post-return inspections.</p>
+  <section class="admin-returns-page container py-4">
+    <div class="page-header d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h2>Returns Management</h2>
+        <p class="muted">Manage pending handbacks and post-return inspections.</p>
+      </div>
     </div>
 
-    <div class="tabs">
-      <button class="tab-btn"
+    <!-- Tabs -->
+    <div class="tabs nav nav-pills mb-4">
+      <button class="tab-btn nav-link"
               :class="{ active: activeTab === 'pending' }"
               @click="activeTab = 'pending'">
         Pending Returns
       </button>
-      <button class="tab-btn"
+      <button class="tab-btn nav-link"
               :class="{ active: activeTab === 'inspection' }"
               @click="activeTab = 'inspection'">
         Pending Inspection
       </button>
-      <button class="tab-btn"
+      <button class="tab-btn nav-link"
               :class="{ active: activeTab === 'history' }"
               @click="activeTab = 'history'">
         Processed History
       </button>
     </div>
 
-    <div v-if="loading" class="card">
-      <p>Loading returns data...</p>
+    <!-- Loading -->
+    <div v-if="loading" class="card p-4 text-center">
+      <p class="mb-0">Loading returns data...</p>
     </div>
 
     <template v-else>
+      <!-- Tab: Pending Returns -->
       <div v-if="activeTab === 'pending'" class="card">
-        <h3>Pending Returns</h3>
-
-        <div v-if="pendingReturns.length === 0" class="empty">
-          No pending returns found.
+        <h3 class="card-header bg-white border-0 px-4 pt-4">Pending Returns</h3>
+        <div class="table-responsive">
+          <table v-if="pendingReturns.length" class="table mb-0">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Employee</th>
+                <th>Reason</th>
+                <th>Initiated By</th>
+                <th>Initiated At</th>
+                <th>Status</th>
+                <th style="width: 140px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in pendingReturns" :key="item.id">
+                <td>
+                  <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
+                  <div class="muted small">{{ item.assetTag || "-" }}</div>
+                </td>
+                <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
+                <td>{{ item.reason || "-" }}</td>
+                <td>{{ item.requestedByName || item.requestedByUserId || "-" }}</td>
+                <td>{{ formatDate(item.initiatedAt || item.createdAt) }}</td>
+                <td>
+                  <span class="status-badge">{{ item.status }}</span>
+                </td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button class="secondary-btn btn" @click="openDetail(item.assetId)">Detail</button>
+                    <button class="primary-btn btn" @click="openProcessModal(item)">
+                      Process
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else class="p-4 text-center empty">
+            No pending returns found.
+          </div>
         </div>
-
-        <table v-else class="table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Employee</th>
-              <th>Reason</th>
-              <th>Initiated By</th>
-              <th>Initiated At</th>
-              <th>Status</th>
-              <th style="width: 140px">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in pendingReturns" :key="item.id">
-              <td>
-                <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
-                <div class="muted small">{{ item.assetTag || "-" }}</div>
-              </td>
-              <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
-              <td>{{ item.reason || "-" }}</td>
-              <td>{{ item.requestedByName || item.requestedByUserId || "-" }}</td>
-              <td>{{ formatDate(item.initiatedAt || item.createdAt) }}</td>
-              <td>
-                <span class="status-badge">{{ item.status }}</span>
-              </td>
-              <td style="display: flex; gap: 8px;">
-                <button class="secondary-btn" @click="openDetail(item.assetId)">Detail</button>
-                <button class="primary-btn" @click="openProcessModal(item)">
-                  Process
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
+      <!-- Tab: Pending Inspection -->
       <div v-if="activeTab === 'inspection'" class="card">
-        <h3>Pending Inspection</h3>
-
-        <div v-if="pendingInspection.length === 0" class="empty">
-          No assets pending inspection.
+        <h3 class="card-header bg-white border-0 px-4 pt-4">Pending Inspection</h3>
+        <div class="table-responsive">
+          <table v-if="pendingInspection.length" class="table mb-0">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Employee</th>
+                <th>Reason</th>
+                <th>Handback Condition</th>
+                <th>Status</th>
+                <th style="width: 140px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in pendingInspection" :key="item.id">
+                <td>
+                  <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
+                  <div class="muted small">{{ item.assetTag || "-" }}</div>
+                </td>
+                <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
+                <td>{{ item.reason || "-" }}</td>
+                <td>{{ item.handbackCondition || "-" }}</td>
+                <td>
+                  <span class="status-badge">{{ item.status }}</span>
+                </td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button class="secondary-btn btn" @click="openDetail(item.assetId)">Detail</button>
+                    <button class="primary-btn btn" @click="openInspectionModal(item)">
+                      Inspect
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else class="p-4 text-center empty">
+            No assets pending inspection.
+          </div>
         </div>
-
-        <table v-else class="table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Employee</th>
-              <th>Reason</th>
-              <th>Handback Condition</th>
-              <th>Status</th>
-              <th style="width: 140px">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in pendingInspection" :key="item.id">
-              <td>
-                <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
-                <div class="muted small">{{ item.assetTag || "-" }}</div>
-              </td>
-              <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
-              <td>{{ item.reason || "-" }}</td>
-              <td>{{ item.handbackCondition || "-" }}</td>
-              <td>
-                <span class="status-badge">{{ item.status }}</span>
-              </td>
-              <td style="display: flex; gap: 8px;">
-                <button class="secondary-btn" @click="openDetail(item.assetId)">Detail</button>
-                <button class="primary-btn" @click="openInspectionModal(item)">
-                  Inspect
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
+      <!-- Tab: Processed History -->
       <div v-if="activeTab === 'history'" class="card">
-        <h3>Processed Returns</h3>
-
-        <div v-if="processedReturns.length === 0" class="empty">
-          No processed return history yet.
+        <h3 class="card-header bg-white border-0 px-4 pt-4">Processed Returns</h3>
+        <div class="table-responsive">
+          <table v-if="processedReturns.length" class="table mb-0">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Employee</th>
+                <th>Final Result</th>
+                <th>Inspected At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in processedReturns" :key="item.id">
+                <td>
+                  <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
+                  <div class="muted small">{{ item.assetTag || "-" }}</div>
+                </td>
+                <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
+                <td>{{ item.inspectionResult || "-" }}</td>
+                <td>{{ formatDate(item.inspectedAt) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else class="p-4 text-center empty">
+            No processed return history yet.
+          </div>
         </div>
-
-        <table v-else class="table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Employee</th>
-              <th>Final Result</th>
-              <th>Inspected At</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in processedReturns" :key="item.id">
-              <td>
-                <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
-                <div class="muted small">{{ item.assetTag || "-" }}</div>
-              </td>
-              <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
-              <td>{{ item.inspectionResult || "-" }}</td>
-              <td>{{ formatDate(item.inspectedAt) }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </template>
 
+    <!-- Process Handback Modal -->
     <div v-if="showProcessModal" class="modal-backdrop">
       <div class="modal-card">
         <div class="modal-header">
           <h3>Process Handback</h3>
-          <button class="icon-btn" @click="closeProcessModal">×</button>
+          <button class="icon-btn btn" @click="closeProcessModal">×</button>
         </div>
-
         <div class="modal-body">
           <div class="summary-box">
             <p><strong>Asset:</strong> {{ selectedItem?.assetName || selectedItem?.assetTag || selectedItem?.assetId }}</p>
             <p><strong>Employee:</strong> {{ selectedItem?.targetUserName || selectedItem?.targetUserId || "-" }}</p>
             <p><strong>Reason:</strong> {{ selectedItem?.reason || "-" }}</p>
           </div>
-
-          <label class="field-checkbox">
+          <label class="field-checkbox d-flex align-items-center gap-2">
             <input v-model="processForm.physicallyReceived" type="checkbox" />
             <span>Device physically received</span>
           </label>
-
           <div class="field">
             <label>Return Date</label>
-            <input v-model="processForm.returnDate" type="date" />
+            <input v-model="processForm.returnDate" type="date" class="form-control" />
           </div>
-
           <div class="field">
             <label>Handback Condition</label>
-            <select v-model="processForm.handbackCondition">
+            <select v-model="processForm.handbackCondition" class="form-select">
               <option value="">Select condition</option>
               <option value="GOOD">GOOD</option>
               <option value="FAIR">FAIR</option>
@@ -178,31 +186,26 @@
               <option value="BROKEN">BROKEN</option>
             </select>
           </div>
-
           <div class="field">
             <label>Notes</label>
-            <textarea v-model="processForm.handbackNotes"
-                      rows="4"
-                      placeholder="Add notes about handback condition..." />
+            <textarea v-model="processForm.handbackNotes" rows="4" class="form-control" placeholder="Add notes about handback condition..." />
           </div>
-
           <p v-if="processError" class="error-text">{{ processError }}</p>
         </div>
-
         <div class="modal-footer">
-          <button class="secondary-btn" @click="closeProcessModal">Cancel</button>
-          <button class="primary-btn" @click="submitProcessHandback">Confirm Handback</button>
+          <button class="secondary-btn btn" @click="closeProcessModal">Cancel</button>
+          <button class="primary-btn btn" @click="submitProcessHandback">Confirm Handback</button>
         </div>
       </div>
     </div>
 
+    <!-- Inspection Modal -->
     <div v-if="showInspectionModal" class="modal-backdrop">
       <div class="modal-card">
         <div class="modal-header">
           <h3>Inspect Returned Asset</h3>
-          <button class="icon-btn" @click="closeInspectionModal">×</button>
+          <button class="icon-btn btn" @click="closeInspectionModal">×</button>
         </div>
-
         <div class="modal-body">
           <div class="summary-box">
             <p><strong>Asset:</strong> {{ selectedInspection?.assetName || selectedInspection?.assetTag || selectedInspection?.assetId }}</p>
@@ -210,41 +213,32 @@
             <p><strong>Reason:</strong> {{ selectedInspection?.reason || "-" }}</p>
             <p><strong>Handback Condition:</strong> {{ selectedInspection?.handbackCondition || "-" }}</p>
           </div>
-
           <div class="field">
             <label>Inspection Notes</label>
-            <textarea v-model="inspectionForm.inspectionNotes"
-                      rows="4"
-                      placeholder="Describe findings from inspection..." />
+            <textarea v-model="inspectionForm.inspectionNotes" rows="4" class="form-control" placeholder="Describe findings from inspection..." />
           </div>
-
           <div class="field">
             <label>Accessories Notes</label>
-            <textarea v-model="inspectionForm.accessoriesNotes"
-                      rows="3"
-                      placeholder="Missing charger, bag, mouse, accessories, etc." />
+            <textarea v-model="inspectionForm.accessoriesNotes" rows="3" class="form-control" placeholder="Missing charger, bag, mouse, accessories, etc." />
           </div>
-
           <div class="field">
             <label>Next Action</label>
-            <select v-model="inspectionForm.inspectionResult">
+            <select v-model="inspectionForm.inspectionResult" class="form-select">
               <option value="">Select result</option>
               <option value="AVAILABLE">AVAILABLE</option>
               <option value="MAINTENANCE">MAINTENANCE</option>
               <option value="BROKEN">BROKEN</option>
             </select>
           </div>
-
           <p v-if="inspectionError" class="error-text">{{ inspectionError }}</p>
         </div>
-
         <div class="modal-footer modal-footer-spread">
-          <button class="secondary-btn danger-btn" @click="openBeyondRepairFromInspection">
+          <button class="secondary-btn danger-btn btn" @click="openBeyondRepairFromInspection">
             Mark as Beyond Repair
           </button>
-          <div class="modal-actions-right">
-            <button class="secondary-btn" @click="saveDraft">Save Draft</button>
-            <button class="primary-btn" @click="submitInspection">Complete Inspection</button>
+          <div class="modal-actions-right d-flex gap-2">
+            <button class="secondary-btn btn" @click="saveDraft">Save Draft</button>
+            <button class="primary-btn btn" @click="submitInspection">Complete Inspection</button>
           </div>
         </div>
       </div>
@@ -255,7 +249,6 @@
                          :asset="selectedLifecycleAsset"
                          mode="beyondRepair"
                          @submit="handleBeyondRepairSubmit" />
-
     <AssetDetailModal v-if="showDetailModal" :asset-id="selectedDetailAssetId" @close="showDetailModal = false" />
   </section>
 </template>
@@ -515,13 +508,15 @@
     margin-bottom: 16px;
   }
 
-  .tabs {
+  .tabs,
+  .nav-pills {
     display: flex;
     gap: 12px;
     margin-bottom: 16px;
   }
 
-  .tab-btn {
+  .tab-btn,
+  .nav-link {
     border: 1px solid #d1d5db;
     background: #fff;
     color: #111827;
@@ -530,7 +525,8 @@
     cursor: pointer;
   }
 
-    .tab-btn.active {
+    .tab-btn.active,
+    .nav-link.active {
       background: #0f2f5f;
       color: #fff;
       border-color: #0f2f5f;
@@ -586,6 +582,7 @@
 
   .primary-btn,
   .secondary-btn,
+  .danger-btn,
   .icon-btn {
     border: none;
     cursor: pointer;
@@ -673,7 +670,9 @@
 
     .field input,
     .field select,
-    .field textarea {
+    .field textarea,
+    .form-control,
+    .form-select {
       border: 1px solid #d1d5db;
       border-radius: 8px;
       padding: 10px;

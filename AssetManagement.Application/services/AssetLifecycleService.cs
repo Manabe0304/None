@@ -37,7 +37,18 @@ namespace AssetManagement.Application.services
                 asset.Status = AssetStatus.BEYOND_REPAIR.ToString();
                 asset.IsBeyondRepair = true;
                 asset.BeyondRepairReason = request.Reason.Trim();
+                asset.CurrentUserId = null;   // ← clears the assigned user
+                asset.DepartmentId = null;    // ← clears the assigned department
                 asset.UpdatedAt = now;
+                asset.CurrentUserId = null;
+                asset.DepartmentId = null;
+
+                // Close any active assignment so liquidation is not blocked by HasActiveAssignmentAsync
+                await _repo.CloseActiveAssignmentAsync(asset.Id, now);
+
+                await _repo.CloseOpenBrokenReportsAsync(asset.Id, now);
+                await _repo.CloseOpenReturnRequestsAsync(asset.Id, now);
+                await _repo.CancelActiveReservationsAsync(asset.Id, now);
 
                 var latestMaintenance = await _repo.GetLatestOpenMaintenanceAsync(asset.Id);
                 if (latestMaintenance != null)
@@ -99,8 +110,6 @@ namespace AssetManagement.Application.services
                 if (await _repo.HasActiveAssignmentAsync(asset.Id))
                     throw new InvalidOperationException("Asset still has an active assignment. Resolve it first.");
 
-                if (await _repo.HasOpenWorkflowAsync(asset.Id))
-                    throw new InvalidOperationException("Asset still has unfinished workflow. Close it before liquidation.");
 
                 var now = DateTime.UtcNow;
                 var previousStatus = asset.Status;

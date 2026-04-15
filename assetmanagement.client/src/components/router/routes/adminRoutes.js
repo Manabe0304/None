@@ -4,7 +4,6 @@ import AssetHistoryPage from "@/views/admin/pages/AssetHistoryPage.vue"
 import CurrentAssignmentsPage from "@/views/admin/pages/CurrentAssignmentsPage.vue"
 import DepartmentPage from "@/views/admin/pages/DepartmentPage.vue"
 import ManageUsersPage from "@/views/admin/pages/ManageUsersPage.vue"
-import SettingsPage from "@/views/admin/pages/SettingsPage.vue"
 import ReportBroken from "@/views/admin/pages/AdminReportBrokenPage.vue"
 
 import AdminReturnsPage from "@/features/returns/pages/AdminReturnsPage.vue"
@@ -72,17 +71,10 @@ const adminRoutes = [
         name: "AdminReturns",
         component: AdminReturnsPage
       },
-
       {
         path: "audit-logs",
         name: "AdminAuditLogs",
         component: AuditLogs
-      },
-
-      {
-        path: "settings",
-        name: "AdminSettings",
-        component: SettingsPage
       }
     ]
   }

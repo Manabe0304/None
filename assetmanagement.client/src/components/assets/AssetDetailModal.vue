@@ -141,11 +141,32 @@
     background: #fff7ed;
   }
 
+  /* --- ĐÃ SỬA: Thêm scroll cho timeline --- */
   .timeline {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    max-height: 320px; /* Giới hạn chiều cao */
+    overflow-y: auto;  /* Kích hoạt scroll dọc */
+    padding-right: 8px; /* Lùi vào một chút để không bị đè bởi thanh cuộn */
   }
+
+  /* Tùy chỉnh làm đẹp thanh cuộn cho webkit (Chrome/Edge/Safari) */
+  .timeline::-webkit-scrollbar {
+    width: 6px;
+  }
+  .timeline::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+  }
+  .timeline::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+  .timeline::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+  /* ---------------------------------------- */
 
   .timeline-item {
     border: 1px solid #e2e8f0;

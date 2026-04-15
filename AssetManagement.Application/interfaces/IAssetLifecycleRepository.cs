@@ -12,5 +12,11 @@ namespace AssetManagement.Application.interfaces
         Task AddAssetHistoryAsync(AssetHistory history);
         Task AddLiquidationAsync(AssetLiquidation liquidation);
         Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> action);
+        Task CloseActiveAssignmentAsync(Guid assetId, DateTime closedAt);
+
+        Task CloseOpenBrokenReportsAsync(Guid assetId, DateTime closedAt);
+        Task CloseOpenReturnRequestsAsync(Guid assetId, DateTime closedAt);
+        Task CancelActiveReservationsAsync(Guid assetId, DateTime closedAt);
+
     }
 }

@@ -3,6 +3,7 @@ import api from "@/services/axiosConfig"
 export async function markBeyondRepair(assetId, reason) {
   const res = await api.post(`/assets/${assetId}/mark-beyond-repair`, {
     reason,
+    
   })
   return res.data
 }
@@ -13,6 +14,7 @@ export async function liquidateAsset(assetId, payload) {
     liquidationDate: payload.liquidationDate,
     disposalMethod: payload.disposalMethod,
     notes: payload.notes || "",
+    force: true
   })
   return res.data
 }

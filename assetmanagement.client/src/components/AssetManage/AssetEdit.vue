@@ -48,12 +48,36 @@
         return Object.keys(this.errors).length === 0
       },
       async updateAsset() {
-        if (!this.validateForm()) { this.$emit('error', 'Vui lòng kiểm tra lại thông tin tài sản.'); return }
-        this.loading = true
-        try { await axios.put(`/api/assets/${this.resolvedId}`, this.asset); this.$emit('success', 'Cập nhật tài sản thành công.') }
-        catch (error) { console.error(error); this.$emit('error', error?.response?.data?.message || 'Cập nhật tài sản thất bại.') }
-        finally { this.loading = false }
-      },
+        if (!this.validateForm()) return;
+
+        this.loading = true;
+
+        // 1. Tạo một bản sao của dữ liệu form để không làm thay đổi trực tiếp giao diện
+        const payload = { ...this.asset };
+
+        // 2. Ép kiểu chuỗi rỗng thành null cho các trường Guid
+        if (payload.departmentId === "") {
+          payload.departmentId = null;
+        }
+
+        // (Làm tương tự nếu bạn có currentUserId hoặc các Guid khác)
+        if (payload.currentUserId === "") {
+          payload.currentUserId = null;
+        }
+
+        try {
+          // 3. Gửi payload đã được làm sạch lên server
+          await axios.put(`/api/assets/${this.resolvedId}`, payload);
+          this.$emit('success', 'Cập nhật tài sản thành công.');
+        }
+        catch (error) {
+          console.error(error);
+          this.$emit('error', 'Cập nhật thất bại.');
+        }
+        finally {
+          this.loading = false;
+        }
+      }
     },
   }
 </script>

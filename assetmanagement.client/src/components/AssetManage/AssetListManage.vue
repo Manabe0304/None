@@ -15,8 +15,8 @@
         </div>
         <div class="toolbar-actions">
           <button class="btn btn-primary" @click="openCreate">+ Add Asset</button>
-          <button class="btn btn-secondary" :disabled="exporting" @click="exportExcel">Export</button>
           <button class="btn btn-secondary" :disabled="uploading" @click="triggerFile">Import</button>
+          <button class="btn btn-secondary" :disabled="exporting" @click="exportExcel">Export</button>
           <input ref="fileInput" type="file" class="hidden-input" accept=".xlsx,.xls" @change="handleFile" />
         </div>
       </div>
@@ -51,10 +51,12 @@
 
       <div class="pagination">
         <button class="btn btn-secondary" :disabled="page === 1 || loading" @click="prevPage">Prev</button>
-        <span class="page-indicator">Page {{ page }}
-        <template v-if="totalCount > 0">
-          / {{ totalPages }}
-        </template></span>
+        <span class="page-indicator">
+          Page {{ page }}
+          <template v-if="totalCount > 0">
+            / {{ totalPages }}
+          </template>
+        </span>
         <button class="btn btn-secondary" :disabled="isLastPage || loading" @click="nextPage">Next</button>
       </div>
     </section>
@@ -119,10 +121,23 @@
       async handleLifecycleSubmit(form) {
         try {
           if (!this.selectedLifecycleAsset?.id) return
-          if (this.lifecycleMode === 'beyondRepair') { await markBeyondRepair(this.selectedLifecycleAsset.id, form.reason); showNotification('Success', 'Asset marked as beyond repair.', 'success') }
-          else { await liquidateAsset(this.selectedLifecycleAsset.id, form); showNotification('Success', 'Asset liquidated successfully.', 'success') }
-          this.showLifecycleModal = false; this.selectedLifecycleAsset = null; await this.loadData()
-        } catch (error) { console.error(error); showNotification('Error', error?.response?.data?.message || 'Lifecycle action failed.', 'error') }
+          if (this.lifecycleMode === 'beyondRepair') {
+            await markBeyondRepair(this.selectedLifecycleAsset.id, form.reason);
+            showNotification('Success', 'Asset marked as beyond repair.', 'success')
+          } else {
+            await liquidateAsset(this.selectedLifecycleAsset.id, form);
+            showNotification('Success', 'Asset liquidated successfully.', 'success')
+          }
+          this.showLifecycleModal = false;
+          this.selectedLifecycleAsset = null;
+          await this.loadData()
+        } catch (error) {
+          console.error('Status:', error.response?.status)
+          console.error('Message:', error.response?.data?.message)
+          console.error('Detail:', error.response?.data)
+          const errorMessage = error.response?.data?.message || 'Lifecycle action failed. Ensure the asset has no active assignments.';
+          showNotification('Error', errorMessage, 'error')
+        }
       },
       async loadData() {
         try {

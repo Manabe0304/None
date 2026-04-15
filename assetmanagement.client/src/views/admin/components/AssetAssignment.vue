@@ -68,18 +68,29 @@
             <p class="request-reason">
               <strong>Reason:</strong> {{ request.reason }}
             </p>
+            <p v-if="request.preferredModel" class="request-reason" style="margin-top: 4px; color: #1d4ed8;">
+              <strong>Requested Model:</strong> {{ request.preferredModel }}
+            </p>
           </div>
 
           <div class="request-action">
-            <label style="margin-bottom: 4px;">Requested Asset</label>
-            <div style="padding: 10px 12px; background: #e5e7eb; border-radius: 8px; font-weight: 500; font-size: 14px; margin-bottom: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #d1d5db;">
-              {{ request.preferredModel || request.assetType }}
+            <label style="margin-bottom: 4px;">Select Asset to Assign</label>
+            
+            <div v-if="getCompatibleAssets(request).length === 0" class="no-asset-warning">
+              No matching AVAILABLE assets for type "{{ request.assetType }}"
             </div>
+            
+            <select v-else v-model="selectedAssets[request.id]" class="asset-select">
+              <option value="">-- Choose an Available Asset --</option>
+              <option v-for="asset in getCompatibleAssets(request)" :key="asset.id" :value="asset.id">
+                [{{ asset.assetTag }}] {{ asset.category || asset.assetType }} - {{ asset.model || asset.assetName }}
+              </option>
+            </select>
 
             <div style="display: flex; gap: 8px;">
               <button class="assign-btn"
                       @click="assignAsset(request)"
-                      :disabled="assigningRequestId === request.id">
+                      :disabled="assigningRequestId === request.id || !selectedAssets[request.id]">
                 {{ assigningRequestId === request.id ? "Assigning..." : "Assign" }}
               </button>
               <button class="reject-btn"
@@ -96,7 +107,7 @@
       <h3>Assignment Rules</h3>
       <ul>
         <li>Only requests with status <strong>APPROVED</strong> are shown here.</li>
-        <li>Only assets with status <strong>AVAILABLE</strong> can be assigned.</li>
+        <li>Only assets with status <strong>AVAILABLE</strong> and matching the requested <strong>Asset Type</strong> can be assigned.</li>
         <li>After assignment: request becomes <strong>ASSIGNED</strong>, asset becomes <strong>IN_USE</strong>.</li>
       </ul>
     </div>
@@ -105,7 +116,7 @@
 
 <script setup>
   import { computed, onMounted, reactive, ref } from "vue"
-  import { showNotification } from "@/stores/notificationStore" // ✅ dùng global store
+  import { showNotification } from "@/stores/notificationStore"
 
   const loading = ref(false)
   const assigningRequestId = ref(null)
@@ -190,18 +201,15 @@
     return new Date(dateValue).toLocaleString()
   }
 
-  function getPreSelectedAsset(request) {
-    let match = null;
-    if (request.preferredModel) {
-      match = availableAssets.value.find(a => request.preferredModel.includes(a.assetTag));
-      if (!match) {
-        match = availableAssets.value.find(a => a.assetName === request.preferredModel);
-      }
-    }
-    if (!match) {
-      match = availableAssets.value.find(a => (a.assetType || a.category || "").toLowerCase() === (request.assetType || "").toLowerCase());
-    }
-    return match;
+  // --- HÀM MỚI: Lọc Asset cùng loại ---
+  function getCompatibleAssets(request) {
+    if (!request || !request.assetType) return [];
+    const reqType = request.assetType.toLowerCase().trim();
+    
+    return availableAssets.value.filter(a => {
+      const assetType = (a.category || a.assetType || "").toLowerCase().trim();
+      return assetType === reqType;
+    });
   }
 
   async function fetchApprovedRequests() {
@@ -215,6 +223,12 @@
 
     const data = await response.json()
     approvedRequests.value = Array.isArray(data) ? data : data.items || []
+    
+    approvedRequests.value.forEach(req => {
+      if (selectedAssets[req.id] === undefined) {
+        selectedAssets[req.id] = ""
+      }
+    })
   }
 
   async function fetchAvailableAssets() {
@@ -243,13 +257,13 @@
   }
 
   async function assignAsset(request) {
-    const asset = getPreSelectedAsset(request)
-    if (!asset) {
-      showNotification("Error", "No matching asset found for this request.", "error")
+    const assetId = selectedAssets[request.id]
+    
+    if (!assetId) {
+      showNotification("Error", "Please select an asset to assign.", "error")
       return
     }
 
-    const assetId = asset.id
     const assignedById = getAssignedById()
 
     if (!assignedById) {
@@ -445,13 +459,36 @@
       color: #374151;
     }
 
-    .request-action select {
+    .asset-select {
       height: 42px;
       border: 1px solid #d1d5db;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 0 12px;
+      background: #ffffff;
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 8px;
+      width: 100%;
+      cursor: pointer;
+    }
+    
+    .asset-select:focus {
+      border-color: #1d4ed8;
+      outline: none;
     }
 
+    .no-asset-warning {
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+  /* ĐÃ SỬA: Bỏ flex:1 ra khỏi class chung này để nút Refresh về nguyên bản */
   .assign-btn,
   .reject-btn,
   .refresh-btn {
@@ -463,6 +500,12 @@
     font-weight: 600;
     cursor: pointer;
     padding: 0 18px;
+  }
+
+  /* Cấp flex:1 riêng cho các nút trong vùng action để nó cân bằng */
+  .assign-btn,
+  .reject-btn {
+    flex: 1;
   }
 
   .reject-btn {
