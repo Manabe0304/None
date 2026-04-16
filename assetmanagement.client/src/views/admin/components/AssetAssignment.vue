@@ -267,7 +267,7 @@
     const assignedById = getAssignedById()
 
     if (!assignedById) {
-      showNotification("Error", "Không xác định được admin đang đăng nhập.", "error")
+      showNotification("Error", "The logged-in administrator cannot be identified.", "error")
       return
     }
 

@@ -297,14 +297,23 @@
   }
 
   .btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    font-weight: bold;
+    color: #fff;
     padding: 8px 14px;
     border-radius: 6px;
     cursor: pointer;
   }
 
+    .btn-primary:hover {
+      background-color: #0b5ed7;
+    }
+
     .btn-primary:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      background-color: #0d6efd; /* Giữ màu khi disabled */
     }
 
   .error-banner,

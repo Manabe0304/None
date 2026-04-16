@@ -9,6 +9,6 @@
         public const string ReportedBroken = "REPORTED_BROKEN";
         public const string BrokenReportApproved = "APPROVED";
         public const string MarkBeyondRepair = "BEYOND_REPAIR";
-        public const string Liquidated = "LIQUIDATED";
+        public const string Liquidated = "LIQUIDATED";  
     }
 }

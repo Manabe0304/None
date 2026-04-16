@@ -36,7 +36,7 @@ const sidebarMenu = {
       icon: "fa-solid fa-building",
     },
     {
-      text: "Report Broken",
+      text: "Report",
       to: "/admin/report-broken",
       icon: "fa-solid fa-triangle-exclamation",
     },

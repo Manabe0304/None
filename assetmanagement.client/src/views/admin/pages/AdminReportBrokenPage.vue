@@ -227,7 +227,6 @@
       width: 100%;
     }
 
-    table,
     .table {
       width: 100%;
       border-collapse: collapse;
@@ -266,16 +265,71 @@
       gap: 8px;
     }
 
-    .btn,
-    button,
-    .refresh-btn,
-    .cancel-btn {
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: none;
+    .btn-primary {
+      background-color: #0d6efd !important;
+      border-color: #0d6efd !important;
+      font-weight: bold;
+      color: #fff !important;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+      .btn-primary:hover {
+        background-color: #0b5ed7 !important;
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #0d6efd !important;
+      }
+
+
+    .btn-success {
+      background-color: #16a34a !important;
+      border-color: #16a34a !important;
+      color: #fff !important;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
     }
+
+      .btn-success:hover {
+        background-color: #15803d !important;
+        border-color: #15803d !important;
+      }
+
+    .btn-danger {
+      background-color: #dc2626 !important;
+      border-color: #dc2626 !important;
+      color: #fff !important;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+      .btn-danger:hover {
+        background-color: #b91c1c !important;
+        border-color: #b91c1c !important;
+      }
+
+    .btn-outline-secondary {
+      background-color: transparent !important;
+      border: 1px solid #6c757d !important;
+      color: #6c757d !important;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+      .btn-outline-secondary:hover {
+        background-color: #6c757d !important;
+        color: #fff !important;
+      }
 
     .accept-btn, .refresh-btn {
       background: #16a34a;
@@ -290,6 +344,40 @@
     .cancel-btn {
       background: #e5e7eb;
       color: #111827;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-open {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .status-processing {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-approved {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-rejected {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .status-neutral {
+      background: #f3f4f6;
+      color: #4b5563;
     }
 
     .type-pill {

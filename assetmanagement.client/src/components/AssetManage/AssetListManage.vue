@@ -146,7 +146,7 @@
           this.assets = (res.data.items || []).map((item) => ({ ...item, assignmentType: item.assignmentType || inferAssignmentType(item) }))
           this.totalCount = res.data.totalCount || this.assets.length
           this.pageSize = res.data.pageSize || 10
-        } catch (error) { console.error(error); showNotification('Error', 'Không thể tải danh sách tài sản.', 'error') }
+        } catch (error) { console.error(error); showNotification('Error', 'Cannot load asset list.', 'error') }
         finally { this.loading = false }
       },
       async applySearch() { this.page = 1; await this.loadData() },
@@ -158,7 +158,7 @@
       closeModal() { this.showModal = false; this.selectedAssetId = null },
       requestDelete(id) { this.deleteAssetId = id; this.showDeleteConfirm = true },
       closeDeleteConfirm() { this.deleteAssetId = null; this.showDeleteConfirm = false },
-      async handleFormSuccess(message) { this.closeModal(); await this.loadData(); showNotification('Success', message || 'Thao tác thành công.', 'success') },
+      async handleFormSuccess(message) { this.closeModal(); await this.loadData(); showNotification('Success', message || 'Operation successful.', 'success') },
       handleFormError(message) { if (message) showNotification('Error', message, 'error') },
       async remove() {
         if (!this.deleteAssetId) return
@@ -166,8 +166,8 @@
           await axios.delete(`/api/assets/${this.deleteAssetId}`)
           if (this.assets.length === 1 && this.page > 1) this.page -= 1
           await this.loadData()
-          showNotification('Success', 'Xóa tài sản thành công.', 'success')
-        } catch (error) { console.error(error); showNotification('Error', error?.response?.data?.message || 'Xóa tài sản thất bại.', 'error') }
+          showNotification('Success', 'Delete asset successfully.', 'success')
+        } catch (error) { console.error(error); showNotification('Error', error?.response?.data?.message || 'Delete asset failed.', 'error') }
         finally { this.closeDeleteConfirm() }
       },
       triggerFile() { this.$refs.fileInput?.click() },
@@ -178,11 +178,11 @@
         try {
           this.uploading = true
           const res = await axios.post('/api/admin/assets/import', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-          showNotification('Success', res.data?.message || 'Import Excel thành công.', 'success')
+          showNotification('Success', res.data?.message || 'Import Excel successfully.', 'success')
           this.file = null
           if (this.$refs.fileInput) this.$refs.fileInput.value = ''
           this.page = 1; await this.loadData()
-        } catch (error) { console.error(error); showNotification('Error', error?.response?.data?.message || 'Import Excel thất bại.', 'error') }
+        } catch (error) { console.error(error); showNotification('Error', error?.response?.data?.message || 'Import Excel failed.', 'error') }
         finally { this.uploading = false }
       },
       async exportExcel() {
@@ -192,8 +192,8 @@
           const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
           const url = window.URL.createObjectURL(blob)
           const link = document.createElement('a'); link.href = url; link.setAttribute('download', 'assets.xlsx'); document.body.appendChild(link); link.click(); link.remove(); window.URL.revokeObjectURL(url)
-          showNotification('Success', 'Export Excel thành công.', 'success')
-        } catch (error) { console.error(error); showNotification('Error', error?.response?.data?.message || 'Export Excel thất bại.', 'error') }
+          showNotification('Success', 'Export Excel successfully.', 'success')
+        } catch (error) { console.error(error); showNotification('Error', error?.response?.data?.message || 'Export Excel failed.', 'error') }
         finally { this.exporting = false }
       },
     },

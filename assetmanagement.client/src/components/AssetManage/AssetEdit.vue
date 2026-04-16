@@ -35,7 +35,7 @@
         try {
           const res = await axios.get(`/api/assets/${this.resolvedId}`)
           this.asset = { assetTag: res.data.assetTag || '', category: res.data.category || '', model: res.data.model || '', serialNumber: res.data.serialNumber || '', purchaseDate: res.data.purchaseDate ? res.data.purchaseDate.split('T')[0] : '', purchaseValue: res.data.purchaseValue ?? 0, status: NON_TERMINAL_FORM_STATUSES.includes(res.data.status) ? res.data.status : ASSET_STATUS.AVAILABLE, departmentId: res.data.departmentId || '', currentUserId: res.data.currentUserId || null, assignmentType: inferAssignmentType(res.data) }
-        } catch (error) { console.error(error); this.$emit('error', 'Không tải được dữ liệu tài sản.') }
+        } catch (error) { console.error(error); this.$emit('error', 'Cannot load asset data.') }
       },
       validateForm() {
         this.errors = {}
@@ -68,11 +68,11 @@
         try {
           // 3. Gửi payload đã được làm sạch lên server
           await axios.put(`/api/assets/${this.resolvedId}`, payload);
-          this.$emit('success', 'Cập nhật tài sản thành công.');
+          this.$emit('success', 'Update asset successfully.');
         }
         catch (error) {
           console.error(error);
-          this.$emit('error', 'Cập nhật thất bại.');
+          this.$emit('error', 'Update failed.');
         }
         finally {
           this.loading = false;

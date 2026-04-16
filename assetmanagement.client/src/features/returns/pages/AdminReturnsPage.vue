@@ -32,11 +32,11 @@
     </div>
 
     <template v-else>
-      <!-- Tab: Pending Returns -->
-      <div v-if="activeTab === 'pending'" class="card">
-        <h3 class="card-header bg-white border-0 px-4 pt-4">Pending Returns</h3>
+      <!-- Pending Returns -->
+      <div v-if="activeTab === 'pending'" class="card shadow-sm">
+        <h5 class="card-header bg-white border-bottom px-4 py-3 fw-semibold">Pending Returns</h5>
         <div class="table-responsive">
-          <table v-if="pendingReturns.length" class="table mb-0">
+          <table v-if="pendingReturns.length" class="table table-hover align-middle mb-0">
             <thead>
               <tr>
                 <th>Asset</th>
@@ -45,44 +45,42 @@
                 <th>Initiated By</th>
                 <th>Initiated At</th>
                 <th>Status</th>
-                <th style="width: 140px">Action</th>
+                <th style="width: 180px; white-space: nowrap">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in pendingReturns" :key="item.id">
                 <td>
-                  <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
-                  <div class="muted small">{{ item.assetTag || "-" }}</div>
+                  <div class="fw-semibold">{{ item.assetName || item.assetTag || item.assetId }}</div>
+                  <div class="text-muted small">{{ item.assetTag || "-" }}</div>
                 </td>
                 <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
                 <td>{{ item.reason || "-" }}</td>
                 <td>{{ item.requestedByName || item.requestedByUserId || "-" }}</td>
                 <td>{{ formatDate(item.initiatedAt || item.createdAt) }}</td>
                 <td>
-                  <span class="status-badge">{{ item.status }}</span>
+                  <span class="badge bg-secondary">{{ item.status }}</span>
                 </td>
-                <td>
+                <td style="white-space: nowrap">
                   <div class="d-flex gap-2">
-                    <button class="secondary-btn btn" @click="openDetail(item.assetId)">Detail</button>
-                    <button class="primary-btn btn" @click="openProcessModal(item)">
-                      Process
-                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" @click="openDetail(item.assetId)">Detail</button>
+                    <button class="btn btn-primary btn-sm" @click="openProcessModal(item)">Process</button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div v-else class="p-4 text-center empty">
+          <div v-else class="p-4 text-center text-muted">
             No pending returns found.
           </div>
         </div>
       </div>
 
-      <!-- Tab: Pending Inspection -->
-      <div v-if="activeTab === 'inspection'" class="card">
-        <h3 class="card-header bg-white border-0 px-4 pt-4">Pending Inspection</h3>
+      <!-- Pending Inspection -->
+      <div v-if="activeTab === 'inspection'" class="card shadow-sm">
+        <h5 class="card-header bg-white border-bottom px-4 py-3 fw-semibold">Pending Inspection</h5>
         <div class="table-responsive">
-          <table v-if="pendingInspection.length" class="table mb-0">
+          <table v-if="pendingInspection.length" class="table table-hover align-middle mb-0">
             <thead>
               <tr>
                 <th>Asset</th>
@@ -90,43 +88,41 @@
                 <th>Reason</th>
                 <th>Handback Condition</th>
                 <th>Status</th>
-                <th style="width: 140px">Action</th>
+                <th style="width: 180px; white-space: nowrap">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in pendingInspection" :key="item.id">
                 <td>
-                  <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
-                  <div class="muted small">{{ item.assetTag || "-" }}</div>
+                  <div class="fw-semibold">{{ item.assetName || item.assetTag || item.assetId }}</div>
+                  <div class="text-muted small">{{ item.assetTag || "-" }}</div>
                 </td>
                 <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
                 <td>{{ item.reason || "-" }}</td>
                 <td>{{ item.handbackCondition || "-" }}</td>
                 <td>
-                  <span class="status-badge">{{ item.status }}</span>
+                  <span class="badge bg-secondary">{{ item.status }}</span>
                 </td>
-                <td>
+                <td style="white-space: nowrap">
                   <div class="d-flex gap-2">
-                    <button class="secondary-btn btn" @click="openDetail(item.assetId)">Detail</button>
-                    <button class="primary-btn btn" @click="openInspectionModal(item)">
-                      Inspect
-                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" @click="openDetail(item.assetId)">Detail</button>
+                    <button class="btn btn-primary btn-sm" @click="openProcessModal(item)">Inspect</button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div v-else class="p-4 text-center empty">
+          <div v-else class="p-4 text-center text-muted">
             No assets pending inspection.
           </div>
         </div>
       </div>
 
-      <!-- Tab: Processed History -->
-      <div v-if="activeTab === 'history'" class="card">
-        <h3 class="card-header bg-white border-0 px-4 pt-4">Processed Returns</h3>
+      <!-- Processed History -->
+      <div v-if="activeTab === 'history'" class="card shadow-sm">
+        <h5 class="card-header bg-white border-bottom px-4 py-3 fw-semibold">Processed Returns</h5>
         <div class="table-responsive">
-          <table v-if="processedReturns.length" class="table mb-0">
+          <table v-if="processedReturns.length" class="table table-hover align-middle mb-0">
             <thead>
               <tr>
                 <th>Asset</th>
@@ -138,16 +134,26 @@
             <tbody>
               <tr v-for="item in processedReturns" :key="item.id">
                 <td>
-                  <div class="strong">{{ item.assetName || item.assetTag || item.assetId }}</div>
-                  <div class="muted small">{{ item.assetTag || "-" }}</div>
+                  <div class="fw-semibold">{{ item.assetName || item.assetTag || item.assetId }}</div>
+                  <div class="text-muted small">{{ item.assetTag || "-" }}</div>
                 </td>
                 <td>{{ item.targetUserName || item.targetUserId || "-" }}</td>
-                <td>{{ item.inspectionResult || "-" }}</td>
+                <td>
+                  <span class="badge"
+                        :class="{
+                          'bg-success': (item.inspectionResult || item.result || item.finalResult || item.assetStatus) === 'AVAILABLE',
+                          'bg-warning text-dark': (item.inspectionResult || item.result || item.finalResult || item.assetStatus) === 'MAINTENANCE',
+                          'bg-danger': (item.inspectionResult || item.result || item.finalResult || item.assetStatus) === 'BROKEN',
+                          'bg-secondary': !(item.inspectionResult || item.result || item.finalResult || item.assetStatus)
+                        }">
+                    {{ item.inspectionResult || item.result || item.finalResult || item.assetStatus || "-" }}
+                  </span>
+                </td>
                 <td>{{ formatDate(item.inspectedAt) }}</td>
               </tr>
             </tbody>
           </table>
-          <div v-else class="p-4 text-center empty">
+          <div v-else class="p-4 text-center text-muted">
             No processed return history yet.
           </div>
         </div>
@@ -625,7 +631,7 @@
 
   .modal-card {
     width: 100%;
-    max-width: 560px;
+    max-width: 600px;
     background: #fff;
     border-radius: 14px;
     overflow: hidden;
@@ -689,5 +695,78 @@
   .error-text {
     color: #dc2626;
     font-size: 13px;
+  }
+
+  .btn-primary {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+    .btn-primary:hover {
+      background-color: #0b5ed7 !important;
+      border-color: #0b5ed7 !important;
+    }
+
+  .btn-outline-secondary {
+    background-color: transparent !important;
+    border: 1px solid #6c757d !important;
+    color: #6c757d !important;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+    .btn-outline-secondary:hover {
+      background-color: #6c757d !important;
+      color: #fff !important;
+    }
+
+  .badge.bg-success {
+    background-color: #16a34a !important;
+    color: #fff !important;
+  }
+
+  .badge.bg-warning {
+    background-color: #f59e0b !important;
+  }
+
+  .badge.bg-danger {
+    background-color: #dc2626 !important;
+    color: #fff !important;
+  }
+
+  .badge.bg-secondary {
+    background-color: #6c757d !important;
+    color: #fff !important;
+  }
+
+  /* Status badge bo tròn */
+  .badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px !important;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+    .badge.bg-secondary {
+      background-color: #6c757d !important;
+      color: #fff !important;
+    }
+
+  /* Action buttons trên 1 dòng */
+  .d-flex.gap-2 {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    align-items: center;
   }
 </style>
